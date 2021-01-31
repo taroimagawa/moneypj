@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<p class='text text-danger'>本当に削除してもよろしいですか？</p>
+<p>　用途：{{ object.purpose }}</p>
+<p>　名前：{{ object.name }}</p>
+<p>　金額：{{ object.amount }}円</p>
+<form action='' method='POST'>
+{% csrf_token %}
+    <button type='submit' class='btn btn-danger'>削除</button>
+    <a href="{% url 'list' %}" class='btn btn-success'>キャンセル</button>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <form method="POST">
+    {% csrf_token %}
+        <div class="alert alert-secondary" role="alert">
+            <table class="table">
+                {{ form }}
+            </table>
+        </div>
+        <button class = "btn btn-warning" type = "submit">編集</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+        <p><a href="{% url 'create' %}" class="btn btn-primary">追加</a></p>
+        {% for money in object_list %}
+            <div class="alert alert-secondary" role="alert">    
+                <p>{{ money.purpose }}</p>
+                <p> {{ money.name }} : {{ money.amount }}円 </p>
+                <a href="{% url 'detail' money.pk %}" class="btn btn-outline-primary btn-sm" tabindex="-1" role="button" aria-disabled="true">詳細</a>
+                <a href="{% url 'update' money.pk %}" class="btn btn-outline-success btn-sm" tabindex="-1" role="button" aria-disabled="true">編集</a>
+                <a href="{% url 'delete' money.pk %}" class="btn btn-outline-danger btn-sm" tabindex="-1" role="button" aria-disabled="true">削除</a>
+            </div>      
+        {% endfor %}
+        <div class="alert alert-primary" role="alert"> 
+            <h6>総合計金額</h6>
+            <p>{{ total_amount }}円</p>
+            <h6>割り勘金額</h6>
+            <p>{{ avg_amount|floatformat:1  }}円</p>
+            <h6>現在の支払金額</h6>
+            <p>Taro：{{ pay_taro }}円<br>
+                Koki：{{ pay_koki }}円<br>
+                Kaze：{{ pay_kaze }}円</p>
+            <h6>支払い不足金額</h6>
+            <p>Taro：{{ deficiency_taro|floatformat:1 }}円<br>
+                Koki：{{ deficiency_koki|floatformat:1  }}円<br>
+                Kaze：{{ deficiency_kaze|floatformat:1  }}円</p>
+            <p>
+                ***<br>
+                〜支払い不足金額について〜<br>
+                +n円：n円払ってもらい過ぎ<br>
+                -n円：n円払い過ぎ<br>
+                ***
+            </p>
+        </div>
+
+        <img src="data:image/png;base64, {{ graph | safe }} " alt="">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for page in paginator.page_range %}
+                    <li {% if page == page_obj.number  %} class="page-item active" {% endif %}><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
